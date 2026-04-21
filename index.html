@@ -256,12 +256,11 @@ tfoot td{background:var(--bg3);font-weight:500}
 
   <!-- GOOGLE SHEETS PANEL (admin only) -->
   <div class="gs-panel" id="gsPanel" style="display:none">
-    <div class="gs-title">📊 Google Sheets Connection</div>
-    <div class="gs-sub">Connect to your Google Sheet to sync scores. Paste your Sheet ID below.</div>
-    <div class="gs-row">
-      <input class="gs-input" id="gsSheetId" placeholder="Sheet ID: 1vazhEeu_wdG1-XQVQtoUzEA85TxjvG6Hek_V6jlsPBU" value="1vazhEeu_wdG1-XQVQtoUzEA85TxjvG6Hek_V6jlsPBU">
-      <button class="gs-btn" onclick="syncFromSheets()">⟳ Sync from Sheets</button>
-      <button class="gs-btn" onclick="exportToSheets()" style="background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.3);color:var(--blue)">↑ Export to Sheets</button>
+    <div class="gs-title">📊 Google Sheets — Connected ✓</div>
+    <div class="gs-sub">Auto-syncing from <strong>Top Bliss Logistics KPI Sheet</strong> · Click Sync to load latest scores</div>
+    <div class="gs-row" style="gap:8px">
+      <button class="gs-btn" onclick="syncFromSheets()" style="font-size:13px;padding:10px 20px">⟳ Sync Now from Google Sheets</button>
+      <button class="gs-btn" onclick="exportToSheets()" style="background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.3);color:var(--blue)">↓ Export CSV</button>
     </div>
     <div class="gs-status" id="gsStatus"></div>
   </div>
@@ -461,7 +460,7 @@ let barChart=null, radarChart=null;
 function initData(id){
   if(!store[id])store[id]={};
   for(let m=0;m<12;m++){
-    if(!store[id][m])store[id][m]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active'};
+    if(!store[id][m])store[id][m]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active',_avgScore:null};
   }
 }
 
@@ -471,18 +470,21 @@ function fmtDate(s){if(!s)return'';const d=new Date(s+'T00:00:00');return d.toLo
 function getKPIs(agent){return KPI_SETS[agent.kpiSet]||KPI_SETS.dispatch;}
 
 function calcScore(kpi,val){
-  const v=parseFloat(val);if(isNaN(v)||val==='')return null;
+  if(val===''||val===null||val===undefined)return null;
+  let v=parseFloat(val);if(isNaN(v))return null;
+  // Convert decimal to percentage if needed (0.14 → 14, 0.99 → 99)
+  if(v>0&&v<=1) v=Math.round(v*10000)/100;
   return kpi.higher?Math.min(100,v):Math.min(100,Math.max(0,100-v));
 }
 function calcWeighted(kpi,val){const s=calcScore(kpi,val);return s===null?null:s*kpi.weight/100;}
 function calcTotal(agentId,month){
   initData(agentId);
-  const agent=USERS.find(u=>u.id===agentId);
-  const kpis=getKPIs(agent);
   const d=store[agentId][month];
-  let sum=0,cnt=0;
-  kpis.forEach((k,i)=>{const w=calcWeighted(k,d.scores[i]);if(w!==null){sum+=w;cnt++;}});
-  return cnt>0?sum:null;
+  // ALWAYS use avgScore from GSheets if available
+  if(d._avgScore!==null && d._avgScore!==undefined && parseFloat(d._avgScore)>0){
+    return parseFloat(d._avgScore);
+  }
+  return null;
 }
 function gradeOf(score){
   if(score===null)return{l:'—',w:'No data',c:'var(--text3)',bg:'var(--bg4)'};
@@ -572,6 +574,10 @@ function setupApp(){
   renderLeaderboard();
   updateCharts();
   updateHero();
+  // Auto-sync from GSheets on login if admin
+  if(curUser.isAdmin){
+    setTimeout(()=>syncFromSheets(), 1000);
+  }
 }
 
 function renderAgentList(){
@@ -756,7 +762,8 @@ function updateCharts(){
   });
 }
 
-// ===== GOOGLE SHEETS SYNC =====
+// ===== GOOGLE SHEETS SYNC via Apps Script =====
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxO0Nrp1cmFCPrbwB4bT-H3XreTiUsNqZEyj5gr6QR2wyi4lswGD4R744YFgr0eiFY5/exec';
 function showGsStatus(msg, ok){
   const el=document.getElementById('gsStatus');
   el.textContent=msg;
@@ -765,40 +772,70 @@ function showGsStatus(msg, ok){
 }
 
 async function syncFromSheets(){
-  const id=document.getElementById('gsSheetId').value.trim();
-  if(!id){showGsStatus('Please enter a Sheet ID.',false);return;}
-  showGsStatus('Connecting to Google Sheets…', true);
-  // Use Google Sheets CSV export URL (public sheets only)
-  const agents=USERS.filter(u=>!u.isAdmin);
-  let synced=0;
-  for(const agent of agents){
-    try{
-      // Each agent has their own tab named by their role
-      const sheetNames=[agent.name, agent.role, agent.id];
-      for(const sn of sheetNames){
-        const url=`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sn)}`;
-        const res=await fetch(url);
-        if(res.ok){
-          const text=await res.text();
-          parseSheetData(agent.id, text);
-          synced++;
-          break;
-        }
+  showGsStatus('⧗ Syncing from Google Sheets…', true);
+  try{
+    const res = await fetch(APPS_SCRIPT_URL);
+    if(!res.ok) throw new Error('Network error: '+res.status);
+    const data = await res.json();
+    let synced=0;
+
+    USERS.filter(u=>!u.isAdmin).forEach(agent=>{
+      const fn=agent.name.split(' ')[0].toUpperCase();
+      const ln=agent.name.split(' ').pop().toUpperCase();
+      const key=Object.keys(data).find(k=>{
+        const ku=k.toUpperCase();
+        return ku.includes(fn)||ku.includes(ln);
+      });
+      if(!key||!data[key]||data[key].error) return;
+
+      const agentData=data[key];
+      const avg=parseFloat(agentData.avgScore);
+      if(isNaN(avg)||avg<=0) return;
+
+      // Make sure store exists
+      if(!store[agent.id]) store[agent.id]={};
+      if(!store[agent.id][selMonth]) store[agent.id][selMonth]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active',_avgScore:null};
+
+      // Set avgScore DIRECTLY - this is the key fix
+      store[agent.id][selMonth]._avgScore = avg.toFixed(1);
+
+      // Set individual scores
+      if(agentData.scores&&agentData.scores.length>0){
+        agentData.scores.forEach((sc,i)=>{
+          if(i<10&&sc>0) store[agent.id][selMonth].scores[i]=String(sc);
+        });
       }
-    }catch(e){}
-  }
-  if(synced>0){
-    renderKPITable();updateCharts();updateHero();renderAgentList();renderLeaderboard();
-    showGsStatus(`✓ Synced data for ${synced} agent(s) from Google Sheets.`, true);
-  } else {
-    showGsStatus('Could not sync. Make sure your Sheet is public (Anyone with link → Viewer) and sheet tab names match agent names.', false);
+
+      // Set period
+      if(agentData.period){
+        if(agentData.period.from) store[agent.id][selMonth].from=String(agentData.period.from);
+        if(agentData.period.to) store[agent.id][selMonth].to=String(agentData.period.to);
+        if(agentData.period.status) store[agent.id][selMonth].status=String(agentData.period.status);
+      }
+
+      synced++;
+      console.log(agent.name, 'synced avgScore:', avg);
+    });
+
+    if(synced>0){
+      // Re-render AFTER all data is stored
+      renderAgentList();
+      renderLeaderboard();
+      renderKPITable();
+      updateCharts();
+      updateHero();
+      showGsStatus('✓ Synced '+synced+' agent(s) from Google Sheets!', true);
+    } else {
+      showGsStatus('⚠ Connected but no matching agent data found.', false);
+    }
+  }catch(err){
+    showGsStatus('✗ Error: '+err.message, false);
   }
 }
 
 function parseSheetData(agentId, csvText){
   initData(agentId);
   const lines=csvText.split('\n').filter(l=>l.trim());
-  // Look for score column (column index 8 = SCORE based on CSV structure)
   lines.forEach((line,idx)=>{
     if(idx===0)return;
     const cols=line.split(',').map(c=>c.replace(/^"|"$/g,'').trim());
