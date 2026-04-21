@@ -16,9 +16,7 @@
   --amber:#fbbf24;--amber-d:rgba(251,191,36,0.13);
   --red:#f87171;--red-d:rgba(248,113,113,0.13);
   --purple:#a78bfa;--purple-d:rgba(167,139,250,0.13);
-  --coral:#fb923c;--coral-d:rgba(251,146,60,0.13);
-  --teal:#2dd4bf;--teal-d:rgba(45,212,191,0.13);
-  --pink:#f472b6;--pink-d:rgba(244,114,182,0.13);
+  --coral:#fb923c;--teal:#2dd4bf;--pink:#f472b6;
   --r:10px;--r2:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -27,222 +25,161 @@ input,select,button{font-family:'DM Sans',sans-serif}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
 
-/* ===== LOGIN ===== */
-#loginScreen{
-  display:flex;align-items:center;justify-content:center;min-height:100vh;
+/* LOGIN */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;
   background:radial-gradient(ellipse at 55% 40%,rgba(79,142,247,0.08) 0%,transparent 65%),
-             radial-gradient(ellipse at 20% 80%,rgba(167,139,250,0.06) 0%,transparent 50%);
-}
+             radial-gradient(ellipse at 20% 80%,rgba(167,139,250,0.06) 0%,transparent 50%)}
 .login-wrap{width:420px}
-.login-brand{text-align:center;margin-bottom:28px}
-.login-logo-icon{
-  width:56px;height:56px;border-radius:16px;
-  background:linear-gradient(135deg,var(--blue),var(--purple));
-  display:flex;align-items:center;justify-content:center;font-size:26px;
-  margin:0 auto 14px;
-}
-.login-brand-name{font-size:20px;font-weight:600;color:var(--text)}
+.login-brand{text-align:center;margin-bottom:24px}
+.login-logo-icon{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.login-brand-name{font-size:20px;font-weight:600}
 .login-brand-sub{font-size:12px;color:var(--text3);margin-top:3px}
-.login-box{
-  background:var(--bg2);border:1px solid var(--border2);
-  border-radius:20px;padding:32px 36px;
-}
-.login-box h2{font-size:16px;font-weight:600;margin-bottom:20px;color:var(--text)}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px 36px}
+.login-box h2{font-size:16px;font-weight:600;margin-bottom:20px}
 .fg{margin-bottom:14px}
 .fg label{display:block;font-size:12px;color:var(--text2);font-weight:500;margin-bottom:6px}
-.fi{
-  width:100%;padding:10px 14px;background:var(--bg3);
-  border:1px solid var(--border2);border-radius:var(--r);
-  color:var(--text);font-size:14px;outline:none;transition:border-color .15s;
-}
+.fi{width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:14px;outline:none;transition:border-color .15s}
 .fi:focus{border-color:var(--blue)}
-.fi-select{
-  width:100%;padding:10px 14px;background:var(--bg3);
-  border:1px solid var(--border2);border-radius:var(--r);
-  color:var(--text);font-size:14px;outline:none;appearance:none;cursor:pointer;
-}
-.login-btn{
-  width:100%;padding:12px;border-radius:var(--r);border:none;
-  background:linear-gradient(135deg,var(--blue),var(--purple));
-  color:#fff;font-size:14px;font-weight:600;cursor:pointer;
-  transition:opacity .15s;margin-top:6px;
-}
+.suggestions{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);margin-top:4px;display:none;max-height:180px;overflow-y:auto}
+.sug-item{padding:10px 14px;cursor:pointer;font-size:13px;color:var(--text);transition:background .1s;border-bottom:1px solid var(--border)}
+.sug-item:last-child{border-bottom:none}
+.sug-item:hover{background:var(--bg4)}
+.sug-role{font-size:11px;color:var(--text3);margin-top:1px}
+.login-btn{width:100%;padding:12px;border-radius:var(--r);border:none;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px}
 .login-btn:hover{opacity:.88}
 .login-err{font-size:12px;color:var(--red);text-align:center;margin-top:10px;display:none}
 .login-note{font-size:11px;color:var(--text3);text-align:center;margin-top:12px}
+.readonly-notice{background:var(--blue-d);border:1px solid rgba(79,142,247,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--blue);text-align:center;margin-top:10px;display:none}
 
-/* ===== APP ===== */
+/* APP */
 #appScreen{display:none}
-.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.layout{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
 
 /* SIDEBAR */
-.sidebar{
-  background:var(--bg2);border-right:1px solid var(--border);
-  padding:20px 14px;display:flex;flex-direction:column;gap:18px;
-  position:sticky;top:0;height:100vh;overflow-y:auto;
-}
-.sb-brand{display:flex;align-items:center;gap:10px;padding:0 6px}
-.sb-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:18px}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:18px 14px;display:flex;flex-direction:column;gap:16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-brand{display:flex;align-items:center;gap:10px;padding:0 4px}
+.sb-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .sb-title{font-size:14px;font-weight:600}
 .sb-sub{font-size:10px;color:var(--text3)}
-
-.admin-card{
-  background:linear-gradient(135deg,rgba(79,142,247,0.15),rgba(167,139,250,0.1));
-  border:1px solid rgba(79,142,247,0.25);border-radius:var(--r2);padding:14px;
-}
-.admin-avatar{
-  width:46px;height:46px;border-radius:50%;
-  background:linear-gradient(135deg,var(--blue),var(--purple));
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:700;color:#fff;margin-bottom:10px;
-}
-.admin-name{font-size:14px;font-weight:600;color:var(--text)}
-.admin-role{font-size:11px;color:var(--blue);margin-top:2px;font-weight:500}
-.admin-badge{
-  display:inline-flex;align-items:center;gap:4px;margin-top:6px;
-  padding:3px 10px;border-radius:20px;background:var(--blue-d);
-  border:1px solid rgba(79,142,247,.3);font-size:10px;color:var(--blue);font-weight:500;
-}
-
-.sb-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:0 6px;margin-bottom:6px}
-
-/* Agent list in sidebar */
-.agent-list{display:flex;flex-direction:column;gap:4px}
-.agent-item{
-  display:flex;align-items:center;gap:10px;padding:8px 10px;
-  border-radius:var(--r);cursor:pointer;border:1px solid transparent;
-  transition:all .15s;
-}
+.user-card{border-radius:var(--r2);border:1px solid var(--border2);padding:12px 14px}
+.user-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
+.user-name{font-size:13px;font-weight:600}
+.user-role{font-size:11px;color:var(--text3);margin-top:2px}
+.user-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.sb-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:0 4px;margin-bottom:6px}
+.agent-list{display:flex;flex-direction:column;gap:3px}
+.agent-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--r);cursor:pointer;border:1px solid transparent;transition:all .15s}
 .agent-item:hover{background:var(--bg3)}
-.agent-item.active{background:var(--blue-d);border-color:rgba(79,142,247,.25)}
-.agent-mini-avatar{
-  width:30px;height:30px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.agent-item-name{font-size:12px;font-weight:500;color:var(--text)}
-.agent-item-score{font-size:11px;font-family:'DM Mono',monospace;margin-left:auto;flex-shrink:0}
-
-.month-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
-.month-btn{
-  padding:5px 3px;border-radius:6px;border:1px solid var(--border);
-  background:transparent;color:var(--text2);font-size:11px;
-  cursor:pointer;text-align:center;transition:all .15s;
-}
+.agent-item.active{background:var(--blue-d);border-color:rgba(79,142,247,.2)}
+.a-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.a-name{font-size:12px;font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-score{font-size:11px;font-family:'DM Mono',monospace;flex-shrink:0}
+.month-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.month-btn{padding:5px 3px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;text-align:center;transition:all .15s}
 .month-btn:hover{background:var(--bg3);color:var(--text)}
 .month-btn.active{background:var(--blue-d);border-color:var(--blue);color:var(--blue);font-weight:500}
-
-.logout-btn{
-  margin-top:auto;padding:9px 14px;border-radius:var(--r);
-  border:1px solid var(--border2);background:transparent;
-  color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;text-align:left;
-}
+.logout-btn{margin-top:auto;padding:9px 14px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;text-align:left}
 .logout-btn:hover{background:var(--red-d);border-color:var(--red);color:var(--red)}
 
 /* MAIN */
-.main{padding:24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.main{padding:22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
 .topbar{display:flex;justify-content:space-between;align-items:flex-start}
-.page-title{font-size:20px;font-weight:600}
+.page-title{font-size:19px;font-weight:600}
 .page-sub{font-size:12px;color:var(--text2);margin-top:3px}
-.live-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--green-d);border:1px solid rgba(52,211,153,.2);color:var(--green);font-size:11px;font-weight:500}
+.live-pill{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;background:var(--green-d);border:1px solid rgba(52,211,153,.2);color:var(--green);font-size:11px;font-weight:500}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-/* LEADERBOARD BANNER */
-.leader-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.leader-card{
-  background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);
-  padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s;
-}
+/* READONLY BANNER */
+.readonly-banner{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+
+/* LEADERBOARD */
+.leader-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.leader-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
 .leader-card:hover{border-color:var(--border2)}
 .leader-card.top1{border-color:rgba(251,191,36,.3);background:linear-gradient(135deg,rgba(251,191,36,0.05),transparent)}
-.l-rank{font-size:18px;font-weight:700;font-family:'DM Mono',monospace;width:24px;flex-shrink:0}
-.l-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
-.l-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.l-score{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;margin-top:2px}
-.l-grade{font-size:10px;padding:2px 7px;border-radius:10px;margin-top:3px;display:inline-block;font-weight:500}
-
-/* HERO */
-.hero-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 180px;gap:10px}
-.hero-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:16px}
-.h-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.h-val{font-size:28px;font-weight:600;font-family:'DM Mono',monospace;line-height:1}
-.h-sub{font-size:11px;color:var(--text3);margin-top:5px}
-.grade-hero{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.grade-big{font-size:48px;font-weight:700;font-family:'DM Mono',monospace;line-height:1}
-.grade-word{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-top:2px}
+.l-rank{font-size:17px;width:22px;flex-shrink:0}
+.l-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.l-name{font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l-score{font-size:12px;font-weight:600;font-family:'DM Mono',monospace;margin-top:2px}
+.l-grade{font-size:10px;padding:2px 6px;border-radius:8px;margin-top:3px;display:inline-block;font-weight:500}
 
 /* PERIOD */
-.period-bar{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);
-  padding:10px 16px;
-}
-.period-label{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:500}
-.period-in{
-  background:var(--bg3);border:1px solid var(--border);border-radius:7px;
-  color:var(--text);font-size:12px;padding:5px 10px;outline:none;
-}
-.period-in:focus{border-color:var(--blue)}
+.period-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:9px 14px}
+.p-label{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:500}
+.p-in{background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;padding:5px 10px;outline:none}
+.p-in:focus{border-color:var(--blue)}
+.p-in:disabled{opacity:.5;cursor:not-allowed}
+
+/* HERO */
+.hero-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 160px;gap:10px}
+.hero-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px}
+.h-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.h-val{font-size:26px;font-weight:600;font-family:'DM Mono',monospace;line-height:1}
+.h-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.grade-hero{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.grade-big{font-size:44px;font-weight:700;font-family:'DM Mono',monospace;line-height:1}
+.grade-word{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-top:2px}
 
 /* KPI TABLE */
 .table-wrap{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);overflow:hidden}
-.table-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.table-title{font-size:14px;font-weight:500}
+.table-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.table-title{font-size:13px;font-weight:500}
 .table-sub{font-size:11px;color:var(--text3);margin-top:2px}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{color:var(--text3);font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
-td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+th{color:var(--text3);font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--bg3)}
-td:first-child{color:var(--text3)}
 .mono{font-family:'DM Mono',monospace;font-size:12px}
-.s-input{
-  width:80px;padding:5px 9px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:6px;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;
-  outline:none;transition:border-color .15s;text-align:right;
-}
+.s-input{width:78px;padding:5px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;outline:none;transition:border-color .15s;text-align:right}
 .s-input:focus{border-color:var(--blue)}
+.s-input:disabled{opacity:.45;cursor:not-allowed;background:var(--bg4)}
 .w-pill{font-size:10px;padding:2px 7px;border-radius:8px;background:var(--bg4);color:var(--text3);font-family:'DM Mono',monospace}
 .mini-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;width:80px}
 .mini-fill{height:100%;border-radius:2px;transition:width .4s}
 .st-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
-.r-input{
-  width:110px;padding:4px 8px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:6px;color:var(--text);font-size:11px;outline:none;
-}
+.r-input{width:100px;padding:4px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;outline:none}
 .r-input:focus{border-color:var(--blue)}
+.r-input:disabled{opacity:.45;cursor:not-allowed}
 tfoot td{background:var(--bg3);font-weight:500}
 
 /* CHARTS */
-.charts-row{display:grid;grid-template-columns:1fr 280px;gap:14px}
-.chart-box{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:16px}
+.charts-row{display:grid;grid-template-columns:1fr 270px;gap:12px}
+.chart-box{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:14px 16px}
 .chart-title{font-size:13px;font-weight:500;margin-bottom:2px}
 .chart-sub-text{font-size:11px;color:var(--text3);margin-bottom:12px}
 
 /* GRADING */
 .grading-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.g-item{background:var(--bg3);border-radius:var(--r);border:1px solid var(--border);padding:12px;text-align:center}
-.g-letter{font-size:22px;font-weight:700;font-family:'DM Mono',monospace}
+.g-item{background:var(--bg3);border-radius:var(--r);border:1px solid var(--border);padding:10px;text-align:center}
+.g-letter{font-size:20px;font-weight:700;font-family:'DM Mono',monospace}
 .g-range{font-size:10px;color:var(--text2);margin-top:2px}
-.g-word{font-size:11px;font-weight:500;margin-top:4px}
+.g-word{font-size:11px;font-weight:500;margin-top:3px}
 
-/* ADD AGENT MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;display:none}
-.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:28px 32px;width:380px}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:20px}
-.modal-actions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
-.btn-cancel{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;cursor:pointer}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:100}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:26px 30px;width:370px}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:18px}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.btn-cancel{padding:8px 14px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;cursor:pointer}
 .btn-cancel:hover{background:var(--bg3)}
-.btn-add{padding:8px 16px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:13px;cursor:pointer;font-weight:500}
-.btn-add:hover{opacity:.88}
-.action-btn{
-  padding:6px 12px;border-radius:7px;border:1px solid var(--border2);
-  background:transparent;color:var(--text2);font-size:11px;cursor:pointer;
-  transition:all .15s;display:inline-flex;align-items:center;gap:4px;
-}
+.btn-ok{padding:8px 14px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:13px;cursor:pointer;font-weight:500}
+.btn-ok:hover{opacity:.88}
+.action-btn{padding:6px 11px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
 .action-btn:hover{background:var(--bg3);color:var(--text)}
 .action-btn.primary{background:var(--blue-d);border-color:rgba(79,142,247,.3);color:var(--blue)}
+
+/* GSHEETS PANEL */
+.gs-panel{background:var(--bg2);border-radius:var(--r2);border:1px solid rgba(52,211,153,.2);padding:14px 18px}
+.gs-title{font-size:13px;font-weight:500;color:var(--green);margin-bottom:4px}
+.gs-sub{font-size:11px;color:var(--text3);margin-bottom:10px}
+.gs-row{display:flex;gap:8px;align-items:center}
+.gs-input{flex:1;padding:8px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;outline:none}
+.gs-input:focus{border-color:var(--green)}
+.gs-btn{padding:8px 14px;border-radius:8px;border:none;background:var(--green-d);border:1px solid rgba(52,211,153,.3);color:var(--green);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap}
+.gs-btn:hover{opacity:.85}
+.gs-status{font-size:11px;margin-top:8px;padding:6px 10px;border-radius:7px;display:none}
 </style>
 </head>
 <body>
@@ -256,19 +193,20 @@ tfoot td{background:var(--bg3);font-weight:500}
       <div class="login-brand-sub">KPI Performance Dashboard</div>
     </div>
     <div class="login-box">
-      <h2>Sign in to your account</h2>
+      <h2>Sign in</h2>
       <div class="fg">
         <label>Your Name</label>
-        <input class="fi" type="text" id="loginName" placeholder="Type your full name…" autocomplete="off">
-        <div id="nameSuggestions" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);margin-top:4px;display:none;max-height:160px;overflow-y:auto"></div>
+        <input class="fi" type="text" id="loginName" placeholder="Start typing your name…" autocomplete="off">
+        <div class="suggestions" id="nameSug"></div>
       </div>
       <div class="fg">
         <label>Password</label>
         <input class="fi" type="password" id="loginPw" placeholder="Enter password">
       </div>
       <button class="login-btn" onclick="doLogin()">Sign In</button>
-      <div class="login-err" id="loginErr">Incorrect name or password. Please try again.</div>
-      <div class="login-note">Top Bliss Logistics · QA & Dispatch KPI System</div>
+      <div class="login-err" id="loginErr">Name not found or incorrect password.</div>
+      <div class="readonly-notice" id="readonlyNotice">👁 You can view your scorecard. Only admin can edit scores.</div>
+      <div class="login-note">Top Bliss Logistics · KPI System v2</div>
     </div>
   </div>
 </div>
@@ -277,251 +215,274 @@ tfoot td{background:var(--bg3);font-weight:500}
 <div id="appScreen">
 <div class="layout">
 
-  <aside class="sidebar">
-    <div class="sb-brand">
-      <div class="sb-icon">📦</div>
-      <div><div class="sb-title">Top Bliss</div><div class="sb-sub">KPI Dashboard</div></div>
-    </div>
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-icon">📦</div>
+    <div><div class="sb-title">Top Bliss</div><div class="sb-sub">KPI Dashboard</div></div>
+  </div>
+  <div class="user-card" id="userCard">
+    <div class="user-avatar" id="sbAvatar">MA</div>
+    <div class="user-name" id="sbName">Mari Ann Capalar</div>
+    <div class="user-role" id="sbRole">Full Access Admin</div>
+    <div class="user-badge" id="sbBadge">👑 Admin</div>
+  </div>
+  <div>
+    <div class="sb-label">Agents</div>
+    <div class="agent-list" id="agentList"></div>
+    <button class="action-btn primary" id="addAgentBtn" style="width:100%;margin-top:7px;justify-content:center" onclick="openModal('addModal')">+ Add Agent</button>
+  </div>
+  <div>
+    <div class="sb-label">Month</div>
+    <div class="month-grid" id="monthGrid"></div>
+  </div>
+  <button class="logout-btn" onclick="doLogout()">⬅ Sign out</button>
+</aside>
 
-    <div class="admin-card">
-      <div class="admin-avatar" id="sbAvatar">MC</div>
-      <div class="admin-name" id="sbName">Mari Ann Capalar</div>
-      <div class="admin-role" id="sbRole">Full Access Admin</div>
-      <div class="admin-badge" id="sbBadge">👑 Admin</div>
-    </div>
-
+<main class="main">
+  <div class="topbar">
     <div>
-      <div class="sb-label">Agents</div>
-      <div class="agent-list" id="agentList"></div>
-      <button class="action-btn primary" style="width:100%;margin-top:8px;justify-content:center" onclick="openAddAgent()">+ Add Agent</button>
+      <div class="page-title" id="pageTitle">KPI Scorecard</div>
+      <div class="page-sub" id="pageSub">Top Bliss Logistics</div>
     </div>
-
-    <div>
-      <div class="sb-label">Month</div>
-      <div class="month-grid" id="monthGrid"></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="live-pill"><div class="live-dot"></div>Live</div>
     </div>
+  </div>
 
-    <button class="logout-btn" onclick="doLogout()">⬅ Sign out</button>
-  </aside>
+  <!-- READ-ONLY BANNER -->
+  <div class="readonly-banner" id="readonlyBanner" style="display:none">
+    👁 <span>View-only mode — only <strong>Mari Ann Capalar</strong> can edit KPI scores.</span>
+  </div>
 
-  <main class="main">
-    <div class="topbar">
+  <!-- GOOGLE SHEETS PANEL (admin only) -->
+  <div class="gs-panel" id="gsPanel" style="display:none">
+    <div class="gs-title">📊 Google Sheets — Connected ✓</div>
+    <div class="gs-sub">Auto-syncing from <strong>Top Bliss Logistics KPI Sheet</strong> · Click Sync to load latest scores</div>
+    <div class="gs-row" style="gap:8px">
+      <button class="gs-btn" onclick="syncFromSheets()" style="font-size:13px;padding:10px 20px">⟳ Sync Now from Google Sheets</button>
+      <button class="gs-btn" onclick="exportToSheets()" style="background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.3);color:var(--blue)">↓ Export CSV</button>
+    </div>
+    <div class="gs-status" id="gsStatus"></div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div>
+    <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Team Leaderboard — <span id="lbMonth"></span></div>
+    <div class="leader-row" id="leaderboard"></div>
+  </div>
+
+  <!-- PERIOD -->
+  <div class="period-bar">
+    <span class="p-label">Covered Period:</span>
+    <input class="p-in" type="date" id="pFrom">
+    <span style="font-size:11px;color:var(--text3)">to</span>
+    <input class="p-in" type="date" id="pTo">
+    <span class="p-label" style="margin-left:6px">Status:</span>
+    <select class="p-in" id="pStatus">
+      <option>Active</option><option>Passed</option><option>Failed</option><option>On Hold</option>
+    </select>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-row">
+    <div class="hero-card">
+      <div class="h-label">Overall Score</div>
+      <div class="h-val" id="hScore">—</div>
+      <div class="h-sub">Weighted average</div>
+    </div>
+    <div class="hero-card">
+      <div class="h-label">KPIs Passed</div>
+      <div class="h-val" id="hPassed" style="color:var(--green)">—</div>
+      <div class="h-sub">Out of 10 factors</div>
+    </div>
+    <div class="hero-card">
+      <div class="h-label">KPIs Failed</div>
+      <div class="h-val" id="hFailed" style="color:var(--red)">—</div>
+      <div class="h-sub">Need improvement</div>
+    </div>
+    <div class="hero-card">
+      <div class="h-label">Period Status</div>
+      <div class="h-val" id="hStatus" style="font-size:17px">—</div>
+      <div class="h-sub" id="hPeriod">—</div>
+    </div>
+    <div class="grade-hero">
+      <div class="h-label" style="text-align:center">Grade</div>
+      <div class="grade-big" id="gradeLetter">—</div>
+      <div class="grade-word" id="gradeWord">—</div>
+    </div>
+  </div>
+
+  <!-- KPI TABLE -->
+  <div class="table-wrap">
+    <div class="table-hdr">
       <div>
-        <div class="page-title" id="pageTitle">KPI Scorecard</div>
-        <div class="page-sub" id="pageSub">QA & Dispatch Officer</div>
+        <div class="table-title" id="tableTitle">KPI Factor Scorecard</div>
+        <div class="table-sub" id="tableRole">—</div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <div class="live-pill"><div class="live-dot"></div>Live</div>
-      </div>
+      <div style="font-size:11px;color:var(--text3)">Total weight: <span style="color:var(--green);font-family:'DM Mono',monospace;font-weight:600">100%</span></div>
     </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>KPI Factor</th><th>Target / Goal</th>
+          <th>Weight</th><th>Actual (%)</th><th>Weighted</th>
+          <th>Progress</th><th>Status</th><th>Pass/Fail</th><th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody id="kpiBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right;color:var(--text);padding:9px 12px">Total / Average</td>
+          <td><span class="mono" style="color:var(--green)">100%</span></td>
+          <td><span class="mono" id="ftAvg">—</span></td>
+          <td><span class="mono" id="ftWt" style="color:var(--blue);font-weight:600">—</span></td>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
-    <!-- LEADERBOARD -->
-    <div>
-      <div style="font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px">Team Leaderboard — <span id="lbMonth"></span></div>
-      <div class="leader-row" id="leaderboard"></div>
-    </div>
-
-    <!-- PERIOD -->
-    <div class="period-bar">
-      <span class="period-label">Covered Period:</span>
-      <input class="period-in" type="date" id="pFrom">
-      <span style="font-size:11px;color:var(--text3)">to</span>
-      <input class="period-in" type="date" id="pTo">
-      <span class="period-label" style="margin-left:6px">Status:</span>
-      <select class="period-in" id="pStatus">
-        <option>Active</option><option>Passed</option><option>Failed</option><option>On Hold</option>
-      </select>
-    </div>
-
-    <!-- HERO -->
-    <div class="hero-row">
-      <div class="hero-card">
-        <div class="h-label">Overall Score</div>
-        <div class="h-val" id="hScore" style="color:var(--blue)">—</div>
-        <div class="h-sub">Weighted average</div>
-      </div>
-      <div class="hero-card">
-        <div class="h-label">KPIs Passed</div>
-        <div class="h-val" id="hPassed" style="color:var(--green)">—</div>
-        <div class="h-sub">Out of 10 factors</div>
-      </div>
-      <div class="hero-card">
-        <div class="h-label">KPIs Failed</div>
-        <div class="h-val" id="hFailed" style="color:var(--red)">—</div>
-        <div class="h-sub">Need improvement</div>
-      </div>
-      <div class="hero-card">
-        <div class="h-label">Period Status</div>
-        <div class="h-val" id="hStatus" style="font-size:18px;color:var(--text)">—</div>
-        <div class="h-sub" id="hPeriod">—</div>
-      </div>
-      <div class="grade-hero">
-        <div class="h-label" style="text-align:center">Grade</div>
-        <div class="grade-big" id="gradeLetter">—</div>
-        <div class="grade-word" id="gradeWord">—</div>
-      </div>
-    </div>
-
-    <!-- KPI TABLE -->
-    <div class="table-wrap">
-      <div class="table-header">
-        <div>
-          <div class="table-title">KPI Factor Scorecard</div>
-          <div class="table-sub">Enter actual score per factor (0–100). Weighted score auto-calculates.</div>
-        </div>
-        <div style="font-size:11px;color:var(--text3)">Total weight: <span style="color:var(--green);font-family:'DM Mono',monospace;font-weight:600">100%</span></div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>KPI Factor</th><th>Target / Goal</th>
-            <th>Weight</th><th>Actual (%)</th><th>Weighted</th>
-            <th>Progress</th><th>Status</th><th>Pass/Fail</th><th>Remarks</th>
-          </tr>
-        </thead>
-        <tbody id="kpiBody"></tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3" style="text-align:right;color:var(--text);padding:10px 14px">Total / Average</td>
-            <td><span class="mono" style="color:var(--green)">100%</span></td>
-            <td><span class="mono" id="ftAvg">—</span></td>
-            <td><span class="mono" id="ftWt" style="color:var(--blue);font-weight:600">—</span></td>
-            <td colspan="4"></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <!-- CHARTS -->
-    <div class="charts-row">
-      <div class="chart-box">
-        <div class="chart-title">Score per KPI Factor</div>
-        <div class="chart-sub-text">Actual scores vs 100% target</div>
-        <div style="position:relative;height:220px">
-          <canvas id="barChart" role="img" aria-label="Bar chart of KPI scores">KPI bar chart.</canvas>
-        </div>
-      </div>
-      <div class="chart-box">
-        <div class="chart-title">Performance Radar</div>
-        <div class="chart-sub-text">Overall KPI shape</div>
-        <div style="position:relative;height:220px">
-          <canvas id="radarChart" role="img" aria-label="Radar chart">KPI radar.</canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- GRADING -->
+  <!-- CHARTS -->
+  <div class="charts-row">
     <div class="chart-box">
-      <div class="chart-title" style="margin-bottom:10px">Grading System — Overall Performance Evaluation</div>
-      <div class="grading-row">
-        <div class="g-item" style="border-color:rgba(52,211,153,.25)">
-          <div class="g-letter" style="color:var(--green)">A</div>
-          <div class="g-range">96–100%</div>
-          <div class="g-word" style="color:var(--green)">Outstanding</div>
-        </div>
-        <div class="g-item" style="border-color:rgba(79,142,247,.25)">
-          <div class="g-letter" style="color:var(--blue)">B</div>
-          <div class="g-range">86–95%</div>
-          <div class="g-word" style="color:var(--blue)">Satisfactory</div>
-        </div>
-        <div class="g-item" style="border-color:rgba(251,191,36,.25)">
-          <div class="g-letter" style="color:var(--amber)">C</div>
-          <div class="g-range">75–85%</div>
-          <div class="g-word" style="color:var(--amber)">Average</div>
-        </div>
-        <div class="g-item" style="border-color:rgba(248,113,113,.25)">
-          <div class="g-letter" style="color:var(--red)">D</div>
-          <div class="g-range">65–74%</div>
-          <div class="g-word" style="color:var(--red)">Failed</div>
-        </div>
+      <div class="chart-title">Score per KPI Factor</div>
+      <div class="chart-sub-text">Actual score vs target</div>
+      <div style="position:relative;height:210px">
+        <canvas id="barChart" role="img" aria-label="KPI bar chart">Bar chart.</canvas>
       </div>
     </div>
+    <div class="chart-box">
+      <div class="chart-title">Performance Radar</div>
+      <div class="chart-sub-text">Overall shape</div>
+      <div style="position:relative;height:210px">
+        <canvas id="radarChart" role="img" aria-label="KPI radar">Radar chart.</canvas>
+      </div>
+    </div>
+  </div>
 
-  </main>
+  <!-- GRADING -->
+  <div class="chart-box">
+    <div class="chart-title" style="margin-bottom:10px">Grading System — Overall Performance</div>
+    <div class="grading-row">
+      <div class="g-item" style="border-color:rgba(52,211,153,.25)"><div class="g-letter" style="color:var(--green)">A</div><div class="g-range">96–100%</div><div class="g-word" style="color:var(--green)">Outstanding</div></div>
+      <div class="g-item" style="border-color:rgba(79,142,247,.25)"><div class="g-letter" style="color:var(--blue)">B</div><div class="g-range">86–95%</div><div class="g-word" style="color:var(--blue)">Satisfactory</div></div>
+      <div class="g-item" style="border-color:rgba(251,191,36,.25)"><div class="g-letter" style="color:var(--amber)">C</div><div class="g-range">75–85%</div><div class="g-word" style="color:var(--amber)">Average</div></div>
+      <div class="g-item" style="border-color:rgba(248,113,113,.25)"><div class="g-letter" style="color:var(--red)">D</div><div class="g-range">65–74%</div><div class="g-word" style="color:var(--red)">Failed</div></div>
+    </div>
+  </div>
+
+</main>
 </div>
 </div>
 
 <!-- ADD AGENT MODAL -->
-<div class="modal-overlay" id="addModal">
+<div class="modal-overlay" id="addModal" style="display:none">
   <div class="modal-box">
     <div class="modal-title">Add New Agent</div>
     <div class="fg"><label>Full Name</label><input class="fi" type="text" id="newName" placeholder="e.g. Juan dela Cruz"></div>
     <div class="fg"><label>Role / Position</label><input class="fi" type="text" id="newRole" placeholder="e.g. QA & Dispatch Officer"></div>
-    <div class="fg"><label>Password</label><input class="fi" type="text" id="newPass" placeholder="Set agent password"></div>
+    <div class="fg">
+      <label>KPI Template</label>
+      <select class="fi" id="newTemplate">
+        <option value="dispatch">QA & Dispatch Officer (John Lloyd)</option>
+        <option value="warehouse">Warehouse & Fulfillment (Elvin)</option>
+        <option value="processor">Processor (Carlo / Harvey)</option>
+      </select>
+    </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAddAgent()">Cancel</button>
-      <button class="btn-add" onclick="addAgent()">Add Agent</button>
+      <button class="btn-cancel" onclick="closeModal('addModal')">Cancel</button>
+      <button class="btn-ok" onclick="addAgent()">Add Agent</button>
     </div>
   </div>
 </div>
 
 <script>
-// ===== KPI DEFINITIONS =====
-const KPIS = [
-  {no:1,name:'Accuracy of Dispatch Orders Rate',goal:'≥98% accuracy',weight:15,color:'#4f8ef7',higher:true},
-  {no:2,name:'Shipping Accuracy Rate',goal:'≥99% accuracy',weight:15,color:'#34d399',higher:true},
-  {no:3,name:'Completion Rate',goal:'≥95% completion',weight:10,color:'#a78bfa',higher:true},
-  {no:4,name:'Customer Complaints Rate',goal:'≤1% of orders',weight:10,color:'#fb923c',higher:false},
-  {no:5,name:'Order Error Rate',goal:'<1% error rate',weight:10,color:'#f87171',higher:false},
-  {no:6,name:'Inventory Accuracy Rate',goal:'≥98% accuracy',weight:10,color:'#2dd4bf',higher:true},
-  {no:7,name:'Packing Efficiency Rate',goal:'Target orders/hr',weight:10,color:'#fbbf24',higher:true},
-  {no:8,name:'Incorrect Tagging of Thermal Rate',goal:'≥99% correct',weight:10,color:'#f472b6',higher:false},
-  {no:9,name:'Team Collaboration Rate',goal:'≥4/5 score',weight:5,color:'#818cf8',higher:true},
-  {no:10,name:'Attendance & Punctuality Rate',goal:'100% attendance',weight:5,color:'#60a5fa',higher:true},
-];
-const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MSHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const COLORS=['#4f8ef7','#34d399','#a78bfa','#fb923c','#f87171','#2dd4bf','#fbbf24','#f472b6','#818cf8','#60a5fa'];
+// ===== KPI SETS =====
+const KPI_SETS = {
+  dispatch: [
+    {no:1,name:'Accuracy of Dispatch Orders Rate',goal:'≥98% accuracy',weight:15,color:'#4f8ef7',higher:true},
+    {no:2,name:'Shipping Accuracy Rate',goal:'≥99% accuracy',weight:15,color:'#34d399',higher:true},
+    {no:3,name:'Completion Rate',goal:'≥95% completion',weight:10,color:'#a78bfa',higher:true},
+    {no:4,name:'Customer Complaints Rate',goal:'≤1% of orders',weight:10,color:'#fb923c',higher:false},
+    {no:5,name:'Order Error Rate',goal:'<1% error rate',weight:10,color:'#f87171',higher:false},
+    {no:6,name:'Inventory Accuracy Rate',goal:'≥98% accuracy',weight:10,color:'#2dd4bf',higher:true},
+    {no:7,name:'Packing Efficiency Rate',goal:'Target orders/hr',weight:10,color:'#fbbf24',higher:true},
+    {no:8,name:'Incorrect Tagging of Thermal Rate',goal:'≥99% correct',weight:10,color:'#f472b6',higher:false},
+    {no:9,name:'Team Collaboration Rate',goal:'≥4/5 score',weight:5,color:'#818cf8',higher:true},
+    {no:10,name:'Attendance & Punctuality Rate',goal:'100% attendance',weight:5,color:'#60a5fa',higher:true},
+  ],
+  warehouse: [
+    {no:1,name:'Accuracy of Orders Fulfilled Rate',goal:'≥98% accuracy',weight:15,color:'#4f8ef7',higher:true},
+    {no:2,name:'Picking Efficiency Rate',goal:'Target orders/hr',weight:15,color:'#34d399',higher:true},
+    {no:3,name:'Inventory Accuracy (Actual Count)',goal:'≥99% accuracy',weight:15,color:'#a78bfa',higher:true},
+    {no:4,name:'Packing Efficiency Rate',goal:'Target orders/hr',weight:10,color:'#fb923c',higher:true},
+    {no:5,name:'Time to Stock Items / Received',goal:'95% streamlined',weight:10,color:'#f87171',higher:true},
+    {no:6,name:'Receiving Returned Parcels',goal:'Within 48hrs / 2 days',weight:10,color:'#2dd4bf',higher:true},
+    {no:7,name:'Damaged Items Rate',goal:'<1% damage rate',weight:5,color:'#fbbf24',higher:false},
+    {no:8,name:'Equipment Handling Rate',goal:'≥95% utilization',weight:5,color:'#f472b6',higher:true},
+    {no:9,name:'Team Collaboration Rate',goal:'≥95% engagement',weight:5,color:'#818cf8',higher:true},
+    {no:10,name:'Attendance & Punctuality Rate',goal:'≥95% attendance',weight:5,color:'#60a5fa',higher:true},
+  ],
+  processor: [
+    {no:1,name:'Order Process Accuracy Rate',goal:'≥99.5% accuracy',weight:20,color:'#4f8ef7',higher:true},
+    {no:2,name:'Shipping Accuracy Rate',goal:'≥99% accuracy',weight:15,color:'#34d399',higher:true},
+    {no:3,name:'Completion Rate',goal:'100% completion',weight:10,color:'#a78bfa',higher:true},
+    {no:4,name:'Order Fulfillment Time Rate',goal:'Min 8hrs / 500-1000 orders',weight:10,color:'#fb923c',higher:true},
+    {no:5,name:'Order Error Rate',goal:'<1% error rate',weight:10,color:'#f87171',higher:false},
+    {no:6,name:'Duplicate Entries Rate',goal:'<1% duplicate rate',weight:10,color:'#2dd4bf',higher:false},
+    {no:7,name:'Customer Complaints Rate',goal:'≤1% of orders',weight:10,color:'#fbbf24',higher:false},
+    {no:8,name:'Backlog of Orders Rate',goal:'<10% of daily orders',weight:5,color:'#f472b6',higher:false},
+    {no:9,name:'Team Collaboration Rate',goal:'≥4/5 score',weight:5,color:'#818cf8',higher:true},
+    {no:10,name:'Attendance & Punctuality Rate',goal:'100% attendance',weight:5,color:'#60a5fa',higher:true},
+  ],
+};
+
+const SHEET_ID = '1vazhEeu_wdG1-XQVQtoUzEA85TxjvG6Hek_V6jlsPBU';
+const AGENT_PW = 'topbliss2024';
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MSHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const COLORS = ['#4f8ef7','#34d399','#a78bfa','#fb923c','#f87171','#2dd4bf','#fbbf24','#f472b6','#818cf8','#60a5fa'];
 
 // ===== USERS =====
 let USERS = [
-  {id:'admin', name:'Mari Ann Capalar', role:'Full Access Admin', password:'topblisslogostic.!', isAdmin:true, color:'#4f8ef7'},
-  {id:'agent1', name:'Juan dela Cruz',  role:'QA & Dispatch Officer', password:'juan123',  isAdmin:false, color:'#34d399'},
-  {id:'agent2', name:'Maria Santos',    role:'QA & Dispatch Officer', password:'maria123', isAdmin:false, color:'#a78bfa'},
-  {id:'agent3', name:'Pedro Reyes',     role:'QA & Dispatch Officer', password:'pedro123', isAdmin:false, color:'#fb923c'},
-  {id:'agent4', name:'Ana Gonzales',    role:'QA & Dispatch Officer', password:'ana123',   isAdmin:false, color:'#f87171'},
+  {id:'admin', name:'Mari Ann Capalar', role:'Full Access Admin', password:'topblisslogostic.!', isAdmin:true, color:'#4f8ef7', kpiSet:'dispatch'},
+  {id:'elvin', name:'Elvin Duldulao', role:'Warehouse Associate & Fulfillment', password:AGENT_PW, isAdmin:false, color:'#34d399', kpiSet:'warehouse'},
+  {id:'carlo', name:'Carlo Guerrero', role:'Processor & Fulfillment Associate', password:AGENT_PW, isAdmin:false, color:'#a78bfa', kpiSet:'processor'},
+  {id:'johnlloyd', name:'John Lloyd Abarico', role:'Marketplace Processor & Fulfillment', password:AGENT_PW, isAdmin:false, color:'#fb923c', kpiSet:'dispatch'},
+  {id:'harvey', name:'Harvey Dee Pona', role:'Processor', password:AGENT_PW, isAdmin:false, color:'#f87171', kpiSet:'processor'},
 ];
 
 // ===== STATE =====
 let curUser=null, viewAgent=null, selMonth=new Date().getMonth();
-
-// ===== DATA STORE =====
 let store={};
+let barChart=null, radarChart=null;
+
 function initData(id){
   if(!store[id])store[id]={};
   for(let m=0;m<12;m++){
-    if(!store[id][m])store[id][m]={scores:KPIS.map(()=>''),remarks:KPIS.map(()=>''),from:'',to:'',status:'Active'};
+    if(!store[id][m])store[id][m]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active'};
   }
 }
-function seedData(){
-  const s={
-    agent1:[98.5,99.1,96.2,0.8,0.7,97.8,88,0.8,80,95],
-    agent2:[97.2,98.5,94.1,1.1,1.2,96.5,82,1.5,78,92],
-    agent3:[99.1,99.5,97.5,0.5,0.4,99.1,91,0.5,85,98],
-    agent4:[95.8,97.2,93.5,1.5,1.8,95.2,79,2.0,75,88],
-  };
-  ['agent1','agent2','agent3','agent4'].forEach(id=>{
-    initData(id);
-    store[id][9].scores=s[id].map(v=>v.toString());
-    store[id][9].from='2024-10-01';store[id][9].to='2024-10-31';
-  });
-}
-seedData();
 
-// ===== HELPERS =====
-function initials(name){return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
-function fmtDate(str){if(!str)return'';const d=new Date(str+'T00:00:00');return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+function fmtDate(s){if(!s)return'';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
+
+function getKPIs(agent){return KPI_SETS[agent.kpiSet]||KPI_SETS.dispatch;}
 
 function calcScore(kpi,val){
   const v=parseFloat(val);if(isNaN(v)||val==='')return null;
   return kpi.higher?Math.min(100,v):Math.min(100,Math.max(0,100-v));
 }
-function calcWeighted(kpi,val){const s=calcScore(kpi,val);return s===null?null:(s*kpi.weight/100);}
+function calcWeighted(kpi,val){const s=calcScore(kpi,val);return s===null?null:s*kpi.weight/100;}
 function calcTotal(agentId,month){
   initData(agentId);
+  const agent=USERS.find(u=>u.id===agentId);
+  const kpis=getKPIs(agent);
   const d=store[agentId][month];
+  // If synced from GSheets, use the average score directly
+  if(d._avgScore) return parseFloat(d._avgScore);
   let sum=0,cnt=0;
-  KPIS.forEach((k,i)=>{const w=calcWeighted(k,d.scores[i]);if(w!==null){sum+=w;cnt++;}});
+  kpis.forEach((k,i)=>{const w=calcWeighted(k,d.scores[i]);if(w!==null){sum+=w;cnt++;}});
   return cnt>0?sum:null;
 }
 function gradeOf(score){
@@ -529,10 +490,9 @@ function gradeOf(score){
   if(score>=96)return{l:'A',w:'Outstanding',c:'var(--green)',bg:'var(--green-d)'};
   if(score>=86)return{l:'B',w:'Satisfactory',c:'var(--blue)',bg:'var(--blue-d)'};
   if(score>=75)return{l:'C',w:'Average',c:'var(--amber)',bg:'var(--amber-d)'};
-  if(score>=65)return{l:'D',w:'Failed',c:'var(--red)',bg:'var(--red-d)'};
   return{l:'D',w:'Failed',c:'var(--red)',bg:'var(--red-d)'};
 }
-function statusOf(kpi,score){
+function statusOf(score){
   if(score===null)return{label:'—',c:'var(--text3)',bg:'var(--bg4)',pass:null};
   if(score>=96)return{label:'Outstanding',c:'var(--green)',bg:'var(--green-d)',pass:true};
   if(score>=86)return{label:'Satisfactory',c:'var(--blue)',bg:'var(--blue-d)',pass:true};
@@ -541,9 +501,9 @@ function statusOf(kpi,score){
 }
 
 // ===== LOGIN =====
-function setupLoginAutocomplete(){
+function setupLogin(){
   const inp=document.getElementById('loginName');
-  const box=document.getElementById('nameSuggestions');
+  const box=document.getElementById('nameSug');
   inp.addEventListener('input',()=>{
     const q=inp.value.trim().toLowerCase();
     box.innerHTML='';
@@ -552,10 +512,8 @@ function setupLoginAutocomplete(){
     if(!matches.length){box.style.display='none';return;}
     matches.forEach(u=>{
       const d=document.createElement('div');
-      d.textContent=u.name+(u.isAdmin?' 👑':'');
-      d.style.cssText='padding:9px 14px;cursor:pointer;font-size:13px;color:var(--text);transition:background .1s';
-      d.onmouseenter=()=>d.style.background='var(--bg4)';
-      d.onmouseleave=()=>d.style.background='';
+      d.className='sug-item';
+      d.innerHTML=`<div>${u.name}${u.isAdmin?' 👑':''}</div><div class="sug-role">${u.role}</div>`;
       d.onclick=()=>{inp.value=u.name;box.style.display='none';document.getElementById('loginPw').focus();};
       box.appendChild(d);
     });
@@ -569,11 +527,7 @@ function doLogin(){
   const pw=document.getElementById('loginPw').value;
   const err=document.getElementById('loginErr');
   const user=USERS.find(u=>u.name.toLowerCase()===nameVal.toLowerCase());
-  if(!user||user.password!==pw){
-    err.style.display='block';
-    err.textContent=!user?'Name not found. Please check your name.':'Incorrect password. Please try again.';
-    return;
-  }
+  if(!user||user.password!==pw){err.style.display='block';return;}
   err.style.display='none';
   curUser=user;
   viewAgent=user.isAdmin?USERS.find(u=>!u.isAdmin):user;
@@ -591,12 +545,27 @@ function doLogout(){
   document.getElementById('appScreen').style.display='none';
   document.getElementById('loginPw').value='';
   document.getElementById('loginName').value='';
-  document.getElementById('nameSuggestions').style.display='none';
 }
 
-// ===== APP SETUP =====
+// ===== APP =====
 function setupApp(){
-  renderSidebarUser();
+  // sidebar user card
+  const u=curUser;
+  document.getElementById('sbAvatar').textContent=initials(u.name);
+  document.getElementById('sbAvatar').style.background=u.isAdmin?'linear-gradient(135deg,#4f8ef7,#a78bfa)':u.color;
+  document.getElementById('sbName').textContent=u.name;
+  document.getElementById('sbRole').textContent=u.isAdmin?'Full Access Admin':u.role;
+  const badge=document.getElementById('sbBadge');
+  badge.textContent=u.isAdmin?'👑 Admin':'👤 Agent';
+  badge.style.cssText=`display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;${u.isAdmin?'color:var(--blue);background:var(--blue-d)':'color:var(--green);background:var(--green-d)'}`;
+  // user card gradient
+  const uc=document.getElementById('userCard');
+  uc.style.background=u.isAdmin?'linear-gradient(135deg,rgba(79,142,247,0.12),rgba(167,139,250,0.08))':'var(--bg3)';
+  uc.style.borderColor=u.isAdmin?'rgba(79,142,247,0.25)':'var(--border2)';
+  // admin-only elements
+  document.getElementById('addAgentBtn').style.display=u.isAdmin?'flex':'none';
+  document.getElementById('gsPanel').style.display=u.isAdmin?'block':'none';
+  document.getElementById('readonlyBanner').style.display=u.isAdmin?'none':'flex';
   renderAgentList();
   renderMonths();
   renderPeriod();
@@ -604,15 +573,10 @@ function setupApp(){
   renderLeaderboard();
   updateCharts();
   updateHero();
-}
-
-function renderSidebarUser(){
-  const u=curUser;
-  document.getElementById('sbAvatar').textContent=initials(u.name);
-  document.getElementById('sbName').textContent=u.name;
-  document.getElementById('sbRole').textContent=u.isAdmin?'Full Access Admin':u.role;
-  document.getElementById('sbBadge').textContent=u.isAdmin?'👑 Admin':'👤 Agent';
-  document.getElementById('sbBadge').style.color=u.isAdmin?'var(--blue)':'var(--green)';
+  // Auto-sync from GSheets on login if admin
+  if(curUser.isAdmin){
+    setTimeout(()=>syncFromSheets(), 1000);
+  }
 }
 
 function renderAgentList(){
@@ -621,25 +585,21 @@ function renderAgentList(){
   agents.forEach(a=>{
     const score=calcTotal(a.id,selMonth);
     const grade=gradeOf(score);
+    // agents can only see themselves; admin sees all
+    if(!curUser.isAdmin&&curUser.id!==a.id)return;
     const div=document.createElement('div');
     div.className='agent-item'+(viewAgent&&viewAgent.id===a.id?' active':'');
     div.innerHTML=`
-      <div class="agent-mini-avatar" style="background:${a.color}">${initials(a.name)}</div>
+      <div class="a-avatar" style="background:${a.color}">${initials(a.name)}</div>
       <div style="flex:1;min-width:0">
-        <div class="agent-item-name">${a.name}</div>
-        <div style="font-size:10px;color:var(--text3)">${a.role}</div>
+        <div class="a-name">${a.name}</div>
+        <div style="font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.role}</div>
       </div>
       <div style="text-align:right">
-        <div class="agent-item-score" style="color:${grade.c}">${score!==null?score.toFixed(1)+'%':'—'}</div>
+        <div class="a-score" style="color:${grade.c}">${score!==null?score.toFixed(1)+'%':'—'}</div>
         <div style="font-size:10px;color:${grade.c}">${grade.l}</div>
-      </div>
-    `;
-    div.onclick=()=>{
-      if(!curUser.isAdmin&&curUser.id!==a.id)return;
-      viewAgent=a;initData(a.id);
-      renderAgentList();renderPeriod();renderKPITable();updateCharts();updateHero();
-      updatePageTitle();
-    };
+      </div>`;
+    div.onclick=()=>{viewAgent=a;initData(a.id);renderAgentList();renderPeriod();renderKPITable();updateCharts();updateHero();updatePageTitle();};
     g.appendChild(div);
   });
 }
@@ -647,6 +607,9 @@ function renderAgentList(){
 function updatePageTitle(){
   document.getElementById('pageTitle').textContent=viewAgent.name+"'s KPI Scorecard";
   document.getElementById('pageSub').textContent=viewAgent.role+' · '+MONTHS[selMonth];
+  document.getElementById('lbMonth').textContent=MONTHS[selMonth];
+  document.getElementById('tableRole').textContent=viewAgent.role;
+  document.getElementById('tableTitle').textContent='KPI Scorecard — '+viewAgent.name;
 }
 
 function renderMonths(){
@@ -655,10 +618,7 @@ function renderMonths(){
     const btn=document.createElement('button');
     btn.className='month-btn'+(i===selMonth?' active':'');
     btn.textContent=m;
-    btn.onclick=()=>{
-      selMonth=i;renderMonths();renderPeriod();renderKPITable();
-      renderLeaderboard();renderAgentList();updateCharts();updateHero();updatePageTitle();
-    };
+    btn.onclick=()=>{selMonth=i;renderMonths();renderPeriod();renderKPITable();renderLeaderboard();renderAgentList();updateCharts();updateHero();updatePageTitle();};
     g.appendChild(btn);
   });
   updatePageTitle();
@@ -666,20 +626,21 @@ function renderMonths(){
 }
 
 function renderPeriod(){
-  const d=store[viewAgent.id][selMonth];
-  document.getElementById('pFrom').value=d.from||'';
-  document.getElementById('pTo').value=d.to||'';
-  document.getElementById('pStatus').value=d.status||'Active';
+  const d=store[viewAgent.id]?.[selMonth]||{};
+  const isAdmin=curUser.isAdmin;
+  const pFrom=document.getElementById('pFrom');
+  const pTo=document.getElementById('pTo');
+  const pSt=document.getElementById('pStatus');
+  pFrom.value=d.from||'';pTo.value=d.to||'';pSt.value=d.status||'Active';
+  pFrom.disabled=!isAdmin;pTo.disabled=!isAdmin;pSt.disabled=!isAdmin;
 }
-document.getElementById('pFrom').addEventListener('change',e=>{store[viewAgent.id][selMonth].from=e.target.value;updateHero();});
-document.getElementById('pTo').addEventListener('change',e=>{store[viewAgent.id][selMonth].to=e.target.value;updateHero();});
-document.getElementById('pStatus').addEventListener('change',e=>{store[viewAgent.id][selMonth].status=e.target.value;updateHero();});
+document.getElementById('pFrom').addEventListener('change',e=>{if(curUser.isAdmin){store[viewAgent.id][selMonth].from=e.target.value;updateHero();}});
+document.getElementById('pTo').addEventListener('change',e=>{if(curUser.isAdmin){store[viewAgent.id][selMonth].to=e.target.value;updateHero();}});
+document.getElementById('pStatus').addEventListener('change',e=>{if(curUser.isAdmin)store[viewAgent.id][selMonth].status=e.target.value;});
 
-// ===== LEADERBOARD =====
 function renderLeaderboard(){
   const agents=USERS.filter(u=>!u.isAdmin);
-  const ranked=[...agents].map(a=>({...a,score:calcTotal(a.id,selMonth)}))
-    .sort((a,b)=>(b.score||0)-(a.score||0));
+  const ranked=[...agents].map(a=>({...a,score:calcTotal(a.id,selMonth)})).sort((a,b)=>(b.score||0)-(a.score||0));
   const g=document.getElementById('leaderboard');g.innerHTML='';
   const medals=['🥇','🥈','🥉'];
   ranked.forEach((a,i)=>{
@@ -687,80 +648,81 @@ function renderLeaderboard(){
     const div=document.createElement('div');
     div.className='leader-card'+(i===0?' top1':'');
     div.innerHTML=`
-      <div>
-        <div class="l-rank" style="color:${i===0?'var(--amber)':i===1?'var(--text2)':'var(--coral)'}">${medals[i]||'#'+(i+1)}</div>
-      </div>
+      <div class="l-rank">${medals[i]||'#'+(i+1)}</div>
       <div class="l-avatar" style="background:${a.color}">${initials(a.name)}</div>
       <div style="flex:1;min-width:0">
         <div class="l-name">${a.name}</div>
         <div class="l-score" style="color:${grade.c}">${a.score!==null?a.score.toFixed(1)+'%':'—'}</div>
         <div class="l-grade" style="color:${grade.c};background:${grade.bg}">${grade.l} · ${grade.w}</div>
-      </div>
-    `;
+      </div>`;
     div.onclick=()=>{viewAgent=USERS.find(u=>u.id===a.id);initData(viewAgent.id);renderAgentList();renderPeriod();renderKPITable();updateCharts();updateHero();updatePageTitle();};
     g.appendChild(div);
   });
 }
 
-// ===== KPI TABLE =====
-let barChart=null,radarChart=null;
 function renderKPITable(){
+  const kpis=getKPIs(viewAgent);
+  initData(viewAgent.id);
   const d=store[viewAgent.id][selMonth];
+  const isAdmin=curUser.isAdmin;
   const tbody=document.getElementById('kpiBody');tbody.innerHTML='';
-  KPIS.forEach((kpi,i)=>{
+  kpis.forEach((kpi,i)=>{
     const raw=d.scores[i]||'';
     const sc=calcScore(kpi,raw);
     const ws=calcWeighted(kpi,raw);
-    const st=statusOf(kpi,sc);
+    const st=statusOf(sc);
     const barW=sc!==null?sc.toFixed(1):0;
     const bc=sc===null?'var(--bg4)':sc>=96?'#34d399':sc>=86?'#4f8ef7':sc>=75?'#fbbf24':'#f87171';
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td style="color:var(--text3)">${kpi.no}</td>
-      <td style="color:var(--text);font-weight:500;max-width:160px;font-size:12px">${kpi.name}</td>
+      <td style="color:var(--text);font-weight:500;max-width:160px">${kpi.name}</td>
       <td style="font-size:11px;color:var(--text3)">${kpi.goal}</td>
       <td><span class="w-pill">${kpi.weight}%</span></td>
-      <td><input class="s-input" type="number" min="0" max="100" step="0.01" value="${raw}" placeholder="—" data-i="${i}"></td>
+      <td><input class="s-input" type="number" min="0" max="100" step="0.01" value="${raw}" placeholder="—" data-i="${i}" ${isAdmin?'':'disabled'}></td>
       <td><span class="mono" style="color:${kpi.color}">${ws!==null?ws.toFixed(2):'—'}</span></td>
-      <td><div class="mini-bar"><div class="mini-fill" style="width:${barW}%;background:${bc}"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">${sc!==null?sc.toFixed(1)+'%':'—'}</div></td>
+      <td>
+        <div class="mini-bar"><div class="mini-fill" style="width:${barW}%;background:${bc}"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${sc!==null?sc.toFixed(1)+'%':'—'}</div>
+      </td>
       <td><span class="st-badge" style="color:${st.c};background:${st.bg}">${st.label}</span></td>
       <td><span class="mono" style="font-size:13px">${st.pass===null?'—':st.pass?'✅':'❌'}</span></td>
-      <td><input class="r-input" type="text" value="${d.remarks[i]||''}" placeholder="Remarks…" data-i="${i}"></td>
-    `;
+      <td><input class="r-input" type="text" value="${d.remarks[i]||''}" placeholder="Remarks…" data-i="${i}" ${isAdmin?'':'disabled'}></td>`;
     tbody.appendChild(tr);
   });
-  tbody.querySelectorAll('.s-input').forEach(inp=>{
-    inp.addEventListener('input',e=>{
-      const i=parseInt(e.target.dataset.i);
-      store[viewAgent.id][selMonth].scores[i]=e.target.value;
-      renderKPITable();updateCharts();updateHero();renderAgentList();renderLeaderboard();
+  if(isAdmin){
+    tbody.querySelectorAll('.s-input').forEach(inp=>{
+      inp.addEventListener('input',e=>{
+        const i=parseInt(e.target.dataset.i);
+        store[viewAgent.id][selMonth].scores[i]=e.target.value;
+        renderKPITable();updateCharts();updateHero();renderAgentList();renderLeaderboard();
+      });
     });
-  });
-  tbody.querySelectorAll('.r-input').forEach(inp=>{
-    inp.addEventListener('input',e=>{
-      const i=parseInt(e.target.dataset.i);
-      store[viewAgent.id][selMonth].remarks[i]=e.target.value;
+    tbody.querySelectorAll('.r-input').forEach(inp=>{
+      inp.addEventListener('input',e=>{store[viewAgent.id][selMonth].remarks[parseInt(e.target.dataset.i)]=e.target.value;});
     });
-  });
+  }
   // footer
-  const d2=store[viewAgent.id][selMonth];
-  const vals=KPIS.map((k,i)=>calcScore(k,d2.scores[i])).filter(v=>v!==null);
-  const wtotal=KPIS.reduce((s,k,i)=>{const w=calcWeighted(k,d2.scores[i]);return s+(w||0);},0);
+  const vals=kpis.map((k,i)=>calcScore(k,d.scores[i])).filter(v=>v!==null);
+  const wtotal=kpis.reduce((s,k,i)=>{const w=calcWeighted(k,d.scores[i]);return s+(w||0);},0);
   document.getElementById('ftAvg').textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)+'%':'—';
   document.getElementById('ftWt').textContent=vals.length?wtotal.toFixed(2)+'%':'—';
 }
 
 function updateHero(){
+  initData(viewAgent.id);
+  const kpis=getKPIs(viewAgent);
   const d=store[viewAgent.id][selMonth];
   const total=calcTotal(viewAgent.id,selMonth);
   const grade=gradeOf(total);
-  const passed=KPIS.filter((k,i)=>{const st=statusOf(k,calcScore(k,d.scores[i]));return st.pass===true;}).length;
-  const failed=KPIS.filter((k,i)=>{const st=statusOf(k,calcScore(k,d.scores[i]));return st.pass===false;}).length;
-  const valid=KPIS.some((k,i)=>d.scores[i]!=='');
-  document.getElementById('hScore').textContent=total!==null?total.toFixed(1)+'%':'—';
-  document.getElementById('hScore').style.color=grade.c;
-  document.getElementById('hPassed').textContent=valid?passed:'—';
-  document.getElementById('hFailed').textContent=valid?failed:'—';
+  const passed=kpis.filter((k,i)=>{const st=statusOf(calcScore(k,d.scores[i]));return st.pass===true;}).length;
+  const failed=kpis.filter((k,i)=>{const st=statusOf(calcScore(k,d.scores[i]));return st.pass===false;}).length;
+  const hasData=kpis.some((k,i)=>d.scores[i]!=='');
+  const hScore=document.getElementById('hScore');
+  hScore.textContent=total!==null?total.toFixed(1)+'%':'—';
+  hScore.style.color=grade.c;
+  document.getElementById('hPassed').textContent=hasData?passed:'—';
+  document.getElementById('hFailed').textContent=hasData?failed:'—';
   document.getElementById('hStatus').textContent=d.status||'—';
   document.getElementById('hPeriod').textContent=(d.from&&d.to)?fmtDate(d.from)+' – '+fmtDate(d.to):MONTHS[selMonth];
   document.getElementById('gradeLetter').textContent=grade.l;
@@ -770,73 +732,168 @@ function updateHero(){
 }
 
 function updateCharts(){
+  initData(viewAgent.id);
+  const kpis=getKPIs(viewAgent);
   const d=store[viewAgent.id][selMonth];
-  const scores=KPIS.map((k,i)=>{const s=calcScore(k,d.scores[i]);return s!==null?parseFloat(s.toFixed(1)):0;});
+  const scores=kpis.map((k,i)=>{const s=calcScore(k,d.scores[i]);return s!==null?parseFloat(s.toFixed(1)):0;});
   const ctx1=document.getElementById('barChart');
   if(barChart)barChart.destroy();
   barChart=new Chart(ctx1,{
     type:'bar',
     data:{
-      labels:KPIS.map(k=>k.name.split(' ').slice(0,3).join(' ')),
-      datasets:[{
-        label:'Score',data:scores,
-        backgroundColor:KPIS.map(k=>k.color+'33'),
-        borderColor:KPIS.map(k=>k.color),
-        borderWidth:1.5,borderRadius:5
-      }]
+      labels:kpis.map(k=>k.name.split(' ').slice(0,3).join(' ')),
+      datasets:[{label:'Score',data:scores,backgroundColor:kpis.map(k=>k.color+'33'),borderColor:kpis.map(k=>k.color),borderWidth:1.5,borderRadius:5}]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        y:{min:0,max:100,ticks:{color:'#4a5268',font:{size:10},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.04)'}},
-        x:{ticks:{color:'#4a5268',font:{size:9},maxRotation:35,autoSkip:false},grid:{display:false}}
-      }
-    }
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{min:0,max:100,ticks:{color:'#4a5268',font:{size:10},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.04)'}},
+        x:{ticks:{color:'#4a5268',font:{size:9},maxRotation:35,autoSkip:false},grid:{display:false}}}}
   });
   const ctx2=document.getElementById('radarChart');
   if(radarChart)radarChart.destroy();
   radarChart=new Chart(ctx2,{
     type:'radar',
     data:{
-      labels:KPIS.map(k=>k.name.split(' ').slice(0,2).join(' ')),
-      datasets:[{
-        label:'Score',data:scores,
-        borderColor:'#4f8ef7',backgroundColor:'rgba(79,142,247,0.12)',
-        borderWidth:1.5,pointRadius:3,pointBackgroundColor:'#4f8ef7',pointBorderColor:'#0c0e14'
-      }]
+      labels:kpis.map(k=>k.name.split(' ').slice(0,2).join(' ')),
+      datasets:[{label:'Score',data:scores,borderColor:'#4f8ef7',backgroundColor:'rgba(79,142,247,0.12)',borderWidth:1.5,pointRadius:3,pointBackgroundColor:'#4f8ef7',pointBorderColor:'#0c0e14'}]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent',color:'#4a5268'},
-        grid:{color:'rgba(255,255,255,0.05)'},pointLabels:{font:{size:9},color:'#8892a4'}}}
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent',color:'#4a5268'},grid:{color:'rgba(255,255,255,0.05)'},pointLabels:{font:{size:9},color:'#8892a4'}}}}
+  });
+}
+
+// ===== GOOGLE SHEETS SYNC via Apps Script =====
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5ozVJGgDAV-s5vROGwkgF4v0A_5cZzG1nOzvgz_wKpgsIqCelcaxS9AIDMaKmTMU/exec';
+function showGsStatus(msg, ok){
+  const el=document.getElementById('gsStatus');
+  el.textContent=msg;
+  el.style.cssText=`display:block;font-size:11px;margin-top:8px;padding:6px 10px;border-radius:7px;${ok?'color:var(--green);background:var(--green-d)':'color:var(--red);background:var(--red-d)'}`;
+  setTimeout(()=>el.style.display='none',4000);
+}
+
+async function syncFromSheets(){
+  showGsStatus('⧗ Connecting to Google Sheets via Apps Script…', true);
+  try{
+    const res = await fetch(APPS_SCRIPT_URL);
+    if(!res.ok) throw new Error('Network error: '+res.status);
+    const data = await res.json();
+    let synced=0;
+    USERS.filter(u=>!u.isAdmin).forEach(agent=>{
+      // Match against uppercase GSheet tab names
+      const agentFirst=agent.name.split(' ')[0].toUpperCase();
+      const agentLast=agent.name.split(' ').pop().toUpperCase();
+      const key=Object.keys(data).find(k=>{
+        const ku=k.toUpperCase();
+        // Special case: JHON = JOHN
+        const normalizedK=ku.replace('JHON','JOHN');
+        const normalizedAgent=agent.name.toUpperCase().replace('JOHN','JOHN');
+        return ku.includes(agentFirst)||ku.includes(agentLast)||
+               normalizedK.includes(normalizedAgent.split(' ')[0])||
+               normalizedAgent.includes(ku.split(' ')[0]);
+      });
+      if(key&&data[key]&&data[key].length>1){
+        initData(agent.id);
+        // Try to get overall average score from last data row (AVERAGE SCORE row)
+        const rows=data[key];
+        const lastRows=rows.slice(-5);
+        lastRows.forEach(row=>{
+          const label=String(row[0]||row[1]||'').toLowerCase();
+          if(label.includes('average')||label.includes('avg')){
+            let avg=parseFloat(row[8]);
+            if(!isNaN(avg)){
+              if(avg>0&&avg<=1)avg=avg*100;
+              store[agent.id][selMonth]._avgScore=avg.toFixed(1);
+            }
+          }
+        });
+        let kpiIdx=0;
+        data[key].forEach((row,ri)=>{
+          if(ri===0)return;
+          const scoreVal=row[8];
+          if(kpiIdx<10&&scoreVal!==undefined&&scoreVal!==''&&scoreVal!==false){
+            const sv=parseFloat(scoreVal);
+            if(!isNaN(sv)){
+              const finalVal = sv>0&&sv<=1 ? (sv*100).toFixed(2) : sv.toFixed(2);
+              store[agent.id][selMonth].scores[kpiIdx]=finalVal;
+              kpiIdx++;
+            }
+          }
+        });
+        if(kpiIdx>0)synced++;
+      }
+    });
+    if(synced>0){
+      renderKPITable();updateCharts();updateHero();renderAgentList();renderLeaderboard();
+      showGsStatus('✓ Successfully synced '+synced+' agent(s) from Google Sheets!', true);
+    } else {
+      showGsStatus('⚠ Connected but no matching data found. Make sure sheet tab names match agent names (e.g. "Elvin Duldulao").', false);
+    }
+  }catch(err){
+    showGsStatus('✗ Error: '+err.message+'. Check if Apps Script is deployed as Anyone.', false);
+  }
+}
+
+function parseSheetData(agentId, csvText){
+  initData(agentId);
+  const lines=csvText.split('\n').filter(l=>l.trim());
+  lines.forEach((line,idx)=>{
+    if(idx===0)return;
+    const cols=line.split(',').map(c=>c.replace(/^"|"$/g,'').trim());
+    const scoreVal=cols[8];
+    const kpiIdx=idx-1;
+    if(kpiIdx>=0&&kpiIdx<10&&scoreVal&&!isNaN(parseFloat(scoreVal))){
+      store[agentId][selMonth].scores[kpiIdx]=scoreVal;
     }
   });
 }
 
+function exportToSheets(){
+  // Generate CSV data and show instructions
+  const csvLines=['Agent,Month,KPI #,KPI Name,Weight,Actual Score,Weighted Score,Status,Pass/Fail,Remarks'];
+  const agents=USERS.filter(u=>!u.isAdmin);
+  agents.forEach(agent=>{
+    initData(agent.id);
+    const kpis=getKPIs(agent);
+    for(let m=0;m<12;m++){
+      const d=store[agent.id][m];
+      kpis.forEach((kpi,i)=>{
+        const sc=calcScore(kpi,d.scores[i]);
+        const ws=calcWeighted(kpi,d.scores[i]);
+        const st=statusOf(sc);
+        csvLines.push(`"${agent.name}","${MONTHS[m]}",${kpi.no},"${kpi.name}",${kpi.weight}%,"${d.scores[i]||''}","${ws!==null?ws.toFixed(2):''}","${st.label}","${st.pass===null?'':st.pass?'PASS':'FAIL'}","${d.remarks[i]||''}"`);
+      });
+    }
+  });
+  const blob=new Blob([csvLines.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='topbliss_kpi_export.csv';
+  a.click();
+  showGsStatus('✓ CSV exported! Import this file into your Google Sheet via File → Import.', true);
+}
+
 // ===== ADD AGENT =====
-function openAddAgent(){document.getElementById('addModal').style.display='flex';}
-function closeAddAgent(){document.getElementById('addModal').style.display='none';}
+function openModal(id){document.getElementById(id).style.display='flex';}
+function closeModal(id){document.getElementById(id).style.display='none';}
+
 function addAgent(){
   const name=document.getElementById('newName').value.trim();
   const role=document.getElementById('newRole').value.trim()||'QA & Dispatch Officer';
-  const pass=document.getElementById('newPass').value.trim();
-  if(!name||!pass){alert('Please enter name and password.');return;}
+  const template=document.getElementById('newTemplate').value;
+  if(!name){alert('Please enter agent name.');return;}
   const id='agent_'+Date.now();
   const colorPick=COLORS[USERS.filter(u=>!u.isAdmin).length%COLORS.length];
-  USERS.push({id,name,role,password:pass,isAdmin:false,color:colorPick});
+  USERS.push({id,name,role,password:AGENT_PW,isAdmin:false,color:colorPick,kpiSet:template});
   initData(id);
-  closeAddAgent();
+  closeModal('addModal');
   document.getElementById('newName').value='';
   document.getElementById('newRole').value='';
-  document.getElementById('newPass').value='';
   renderAgentList();
   renderLeaderboard();
 }
 
 // ===== INIT =====
-setupLoginAutocomplete();
+USERS.filter(u=>!u.isAdmin).forEach(u=>initData(u.id));
+setupLogin();
 </script>
 </body>
 </html>
