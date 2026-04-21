@@ -460,7 +460,7 @@ let barChart=null, radarChart=null;
 function initData(id){
   if(!store[id])store[id]={};
   for(let m=0;m<12;m++){
-    if(!store[id][m])store[id][m]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active'};
+    if(!store[id][m])store[id][m]={scores:Array(10).fill(''),remarks:Array(10).fill(''),from:'',to:'',status:'Active',_avgScore:null};
   }
 }
 
