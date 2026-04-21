@@ -476,11 +476,12 @@ function calcScore(kpi,val){
 function calcWeighted(kpi,val){const s=calcScore(kpi,val);return s===null?null:s*kpi.weight/100;}
 function calcTotal(agentId,month){
   initData(agentId);
+  const d=store[agentId][month];
+  // Priority 1: Use avgScore synced directly from GSheets
+  if(d._avgScore && parseFloat(d._avgScore)>0) return parseFloat(d._avgScore);
+  // Priority 2: Calculate from individual scores
   const agent=USERS.find(u=>u.id===agentId);
   const kpis=getKPIs(agent);
-  const d=store[agentId][month];
-  // If synced from GSheets, use the average score directly
-  if(d._avgScore) return parseFloat(d._avgScore);
   let sum=0,cnt=0;
   kpis.forEach((k,i)=>{const w=calcWeighted(k,d.scores[i]);if(w!==null){sum+=w;cnt++;}});
   return cnt>0?sum:null;
@@ -771,29 +772,27 @@ function showGsStatus(msg, ok){
 }
 
 async function syncFromSheets(){
-  showGsStatus('⧗ Connecting to Google Sheets…', true);
+  showGsStatus('⧗ Syncing from Google Sheets…', true);
   try{
     const res = await fetch(APPS_SCRIPT_URL);
     if(!res.ok) throw new Error('Network error: '+res.status);
     const data = await res.json();
     let synced=0;
     USERS.filter(u=>!u.isAdmin).forEach(agent=>{
-      const firstName=agent.name.split(' ')[0].toUpperCase();
-      const agentLast=agent.name.split(' ').pop().toUpperCase();
+      const fn=agent.name.split(' ')[0].toUpperCase();
+      const ln=agent.name.split(' ').pop().toUpperCase();
+      // Find matching key in returned data
       const key=Object.keys(data).find(k=>{
         const ku=k.toUpperCase();
-        return ku.includes(firstName)||ku.includes(agentLast);
+        return ku.includes(fn)||ku.includes(ln);
       });
-      if(key&&data[key]){
+      if(key&&data[key]&&!data[key].error){
         initData(agent.id);
         const agentData=data[key];
-        if(agentData.avgScore!==undefined&&agentData.avgScore!==null){
-          store[agent.id][selMonth]._avgScore=parseFloat(agentData.avgScore).toFixed(1);
-        }
-        if(agentData.scores&&agentData.scores.length>0){
-          agentData.scores.forEach((sc,i)=>{
-            if(i<10) store[agent.id][selMonth].scores[i]=parseFloat(sc).toFixed(2);
-          });
+        // Use avgScore directly from GSheets
+        const avg=parseFloat(agentData.avgScore);
+        if(!isNaN(avg)&&avg>0){
+          store[agent.id][selMonth]._avgScore=avg.toFixed(1);
         }
         if(agentData.period){
           if(agentData.period.from) store[agent.id][selMonth].from=String(agentData.period.from);
@@ -805,9 +804,9 @@ async function syncFromSheets(){
     });
     if(synced>0){
       renderKPITable();updateCharts();updateHero();renderAgentList();renderLeaderboard();
-      showGsStatus('✓ Successfully synced '+synced+' agent(s) from Google Sheets!', true);
+      showGsStatus('✓ Synced '+synced+' agents from Google Sheets!', true);
     } else {
-      showGsStatus('⚠ Connected but no data found. Check sheet tab names.', false);
+      showGsStatus('⚠ Connected but no data matched. Check sheet tab names.', false);
     }
   }catch(err){
     showGsStatus('✗ Error: '+err.message, false);
