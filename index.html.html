@@ -799,8 +799,8 @@ async function syncFromSheets(){
           const label=String(row[0]||row[1]||row[2]||row[3]||'').toLowerCase();
           if(label.includes('average')||label.includes('avg')){
             // Check score column (index 8) and also index 9
-            let avg=parseFloat(row[8]);
-            if(isNaN(avg)||avg===0) avg=parseFloat(row[9]);
+            let avg=parseFloat(row[9]);
+            if(isNaN(avg)||avg===0) avg=parseFloat(row[8]);
             if(!isNaN(avg)&&avg!==0){
               if(avg>0&&avg<=1) avg=Math.round(avg*10000)/100;
               store[agent.id][selMonth]._avgScore=avg.toFixed(1);
