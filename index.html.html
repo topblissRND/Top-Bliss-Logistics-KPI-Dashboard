@@ -480,14 +480,11 @@ function calcWeighted(kpi,val){const s=calcScore(kpi,val);return s===null?null:s
 function calcTotal(agentId,month){
   initData(agentId);
   const d=store[agentId][month];
-  // Priority 1: Use avgScore synced directly from GSheets
-  if(d._avgScore && parseFloat(d._avgScore)>0) return parseFloat(d._avgScore);
-  // Priority 2: Calculate from individual scores
-  const agent=USERS.find(u=>u.id===agentId);
-  const kpis=getKPIs(agent);
-  let sum=0,cnt=0;
-  kpis.forEach((k,i)=>{const w=calcWeighted(k,d.scores[i]);if(w!==null){sum+=w;cnt++;}});
-  return cnt>0?sum:null;
+  // ALWAYS use avgScore from GSheets if available
+  if(d._avgScore!==null && d._avgScore!==undefined && parseFloat(d._avgScore)>0){
+    return parseFloat(d._avgScore);
+  }
+  return null;
 }
 function gradeOf(score){
   if(score===null)return{l:'—',w:'No data',c:'var(--text3)',bg:'var(--bg4)'};
@@ -792,10 +789,16 @@ async function syncFromSheets(){
       if(key&&data[key]&&!data[key].error){
         initData(agent.id);
         const agentData=data[key];
-        // Use avgScore directly from GSheets
+        // Use avgScore directly from GSheets - store in ALL months for this agent
         const avg=parseFloat(agentData.avgScore);
         if(!isNaN(avg)&&avg>0){
           store[agent.id][selMonth]._avgScore=avg.toFixed(1);
+          // Also store individual scores
+          if(agentData.scores&&agentData.scores.length>0){
+            agentData.scores.forEach((sc,i)=>{
+              if(i<10) store[agent.id][selMonth].scores[i]=String(sc);
+            });
+          }
         }
         if(agentData.period){
           if(agentData.period.from) store[agent.id][selMonth].from=String(agentData.period.from);
