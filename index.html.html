@@ -794,26 +794,33 @@ async function syncFromSheets(){
         initData(agent.id);
         // Try to get overall average score from last data row (AVERAGE SCORE row)
         const rows=data[key];
-        const lastRows=rows.slice(-5);
+        const lastRows=rows.slice(-8);
         lastRows.forEach(row=>{
-          const label=String(row[0]||row[1]||'').toLowerCase();
+          const label=String(row[0]||row[1]||row[2]||row[3]||'').toLowerCase();
           if(label.includes('average')||label.includes('avg')){
+            // Check score column (index 8) and also index 9
             let avg=parseFloat(row[8]);
-            if(!isNaN(avg)){
-              if(avg>0&&avg<=1)avg=avg*100;
+            if(isNaN(avg)||avg===0) avg=parseFloat(row[9]);
+            if(!isNaN(avg)&&avg!==0){
+              if(avg>0&&avg<=1) avg=Math.round(avg*10000)/100;
               store[agent.id][selMonth]._avgScore=avg.toFixed(1);
+              console.log('Found avg score for',key,':',avg);
             }
           }
         });
         let kpiIdx=0;
         data[key].forEach((row,ri)=>{
           if(ri===0)return;
-          const scoreVal=row[8];
-          if(kpiIdx<10&&scoreVal!==undefined&&scoreVal!==''&&scoreVal!==false){
-            const sv=parseFloat(scoreVal);
-            if(!isNaN(sv)){
-              const finalVal = sv>0&&sv<=1 ? (sv*100).toFixed(2) : sv.toFixed(2);
-              store[agent.id][selMonth].scores[kpiIdx]=finalVal;
+          // Skip non-KPI rows (bracket rows, empty rows, summary rows)
+          const rowLabel=String(row[0]||'').trim();
+          const isKPIRow=rowLabel===''||/^\d+/.test(rowLabel);
+          const scoreVal=row[8]; // SCORE column
+          if(isKPIRow&&kpiIdx<10&&scoreVal!==undefined&&scoreVal!==''&&scoreVal!==false&&scoreVal!==null){
+            let sv=parseFloat(scoreVal);
+            if(!isNaN(sv)&&sv!==0){
+              // GSheets sends % as decimal: 0.20=20%, 0.99=99%
+              if(sv>0&&sv<=1) sv=Math.round(sv*10000)/100;
+              store[agent.id][selMonth].scores[kpiIdx]=sv.toFixed(2);
               kpiIdx++;
             }
           }
